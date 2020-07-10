@@ -37,6 +37,7 @@ def cityreader(cities=[]):
     city = City(name=row[0], lat=float(row[3]), lon=float(row[4]))
     cities.append(city)
 
+  file.close()
   return cities
 
 cityreader(cities)
