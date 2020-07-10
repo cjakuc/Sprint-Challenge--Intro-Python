@@ -1,5 +1,15 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
+import csv
+
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+  
+  def __repr__(self):
+    return f"<City: {self.name}, {self.lat}, {self.lon}>"
 
 
 # We have a collection of US cities with population over 750,000 stored in the
@@ -20,8 +30,14 @@ def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
-    
-    return cities
+  file = open('cities.csv')
+  csv_reader = csv.reader(file)
+  next(csv_reader)
+  for row in csv_reader:
+    city = City(name=row[0], lat=float(row[3]), lon=float(row[4]))
+    cities.append(city)
+
+  return cities
 
 cityreader(cities)
 
@@ -67,5 +83,32 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
+
+  # Ensure they're floats
+  lat1 = float(lat1)
+  lat2 = float(lat2)
+  lon1 = float(lon1)
+  lon2 = float(lon2)
+
+  # Find max lat/lon and min lat/lon
+    # Don't need to keep the lats/lons together because they form the same square regardless
+  if lat1 > lat2:
+    maxlat = lat1
+    minlat = lat2
+  else:
+    maxlat = lat2 
+    minlat = lat1
+  
+  if lon1 > lon2:
+    maxlon = lon1
+    minlon = lon2
+  else:
+    maxlon = lon2
+    minlon = lon1
+
+  # Check if each city is inside the square, append if it is
+  for city in cities:
+    if ((city.lat >= minlat and city.lat <= maxlat) and (city.lon >= minlon and city.lon <= maxlon)):
+      within.append(city)
 
   return within
